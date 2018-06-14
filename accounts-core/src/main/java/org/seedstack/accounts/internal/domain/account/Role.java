@@ -10,18 +10,13 @@
  */
 package org.seedstack.accounts.internal.domain.account;
 
+import java.io.Serializable;
 
 import org.seedstack.business.domain.BaseValueObject;
-
-import javax.persistence.Embeddable;
-import javax.persistence.Table;
-import java.io.Serializable;
 
 /**
  * A Role is only a String representing its name.
  */
-@Embeddable
-@Table(name = "SEED_ROLES")
 public class Role extends BaseValueObject implements Serializable {
 
     private static final long serialVersionUID = 3281204012412448078L;

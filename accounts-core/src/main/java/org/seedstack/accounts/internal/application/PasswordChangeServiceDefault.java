@@ -10,17 +10,16 @@
  */
 package org.seedstack.accounts.internal.application;
 
+import javax.inject.Inject;
+
 import org.seedstack.accounts.IncorrectPasswordException;
 import org.seedstack.accounts.PasswordChangeService;
 import org.seedstack.accounts.internal.domain.account.Account;
 import org.seedstack.accounts.internal.domain.account.AccountRepository;
 import org.seedstack.seed.crypto.Hash;
 import org.seedstack.seed.crypto.HashingService;
-import org.seedstack.jpa.JpaUnit;
 import org.seedstack.seed.security.SecuritySupport;
 import org.seedstack.seed.transaction.Transactional;
-
-import javax.inject.Inject;
 
 /**
  * Default implementation
@@ -38,23 +37,20 @@ public class PasswordChangeServiceDefault implements PasswordChangeService {
 
     @Override
     @Transactional
-    @JpaUnit("accounts-domain")
     public void changePassword(String currentPassword, String newPassword) throws IncorrectPasswordException {
         if (!securitySupport.isAuthenticated()) {
             throw new IllegalStateException("Only connected user can change his password");
         }
         String id = securitySupport.getIdentityPrincipal().getPrincipal().toString();
-        Account account = accountRepository.load(id);
-        if (account == null) {
-            throw new IllegalStateException("User not connected with his database id");
-        }
-        if (!hashingService.validatePassword(currentPassword, new Hash(account.getHashedPassword(), account.getSalt()))) {
+        Account account = accountRepository.getAccount(id);
+        if (!hashingService.validatePassword(currentPassword,
+                new Hash(account.getHashedPassword(), account.getSalt()))) {
             throw new IncorrectPasswordException();
         }
         Hash newHash = hashingService.createHash(newPassword);
         account.setHashedPassword(newHash.getHashAsString());
         account.setSalt(newHash.getSaltAsString());
-        accountRepository.save(account);
+        accountRepository.update(account);
     }
 
 }

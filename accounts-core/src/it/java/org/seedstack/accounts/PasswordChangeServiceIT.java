@@ -10,20 +10,21 @@
  */
 package org.seedstack.accounts;
 
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.mgt.SecurityManager;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import javax.inject.Inject;
+
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ThreadContext;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.mgt.SecurityManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.seedstack.seed.it.SeedITRunner;
 import org.seedstack.seed.security.SecuritySupport;
-
-import javax.inject.Inject;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.seedstack.seed.testing.junit4.SeedITRunner;
 
 @RunWith(SeedITRunner.class)
 public class PasswordChangeServiceIT {

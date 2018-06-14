@@ -17,9 +17,9 @@ import org.apache.shiro.util.ThreadContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.seedstack.seed.it.SeedITRunner;
-import org.seedstack.jpa.JpaUnit;
+
 import org.seedstack.seed.security.SecuritySupport;
+import org.seedstack.seed.testing.junit4.SeedITRunner;
 import org.seedstack.seed.transaction.Transactional;
 
 import javax.inject.Inject;
@@ -53,7 +53,6 @@ public class AccountManagementServiceIT {
 
     @Before
     @Transactional
-    @JpaUnit("accounts-domain")
     public void initBase() throws Exception {
         if (!alreadyInited) {
             accountManagementService.createAccount(ID, PASSWORD);

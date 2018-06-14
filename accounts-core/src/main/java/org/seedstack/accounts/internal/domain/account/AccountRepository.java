@@ -10,11 +10,16 @@
  */
 package org.seedstack.accounts.internal.domain.account;
 
-import org.seedstack.business.domain.GenericRepository;
+import org.seedstack.business.domain.Repository;
+import org.seedstack.seed.security.UnknownAccountException;
 
 /**
  * Repository for {@link Account}
  */
-public interface AccountRepository extends GenericRepository<Account, String> {
+public interface AccountRepository extends Repository<Account, String> {
 
+    default Account getAccount(String accountId) {
+        return this.get(accountId)
+                .orElseThrow(() -> new UnknownAccountException("Account with id [" + accountId + "] does not exist"));
+    }
 }

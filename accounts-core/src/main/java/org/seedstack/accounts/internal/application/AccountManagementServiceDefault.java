@@ -10,6 +10,11 @@
  */
 package org.seedstack.accounts.internal.application;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.inject.Inject;
+
 import org.seedstack.accounts.AccountManagementService;
 import org.seedstack.accounts.internal.domain.account.Account;
 import org.seedstack.accounts.internal.domain.account.AccountFactory;
@@ -17,40 +22,41 @@ import org.seedstack.accounts.internal.domain.account.AccountRepository;
 import org.seedstack.accounts.internal.domain.account.Role;
 import org.seedstack.seed.crypto.Hash;
 import org.seedstack.seed.crypto.HashingService;
-import org.seedstack.jpa.JpaUnit;
 import org.seedstack.seed.transaction.Transactional;
-
-import javax.inject.Inject;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Default implementation
  */
 @Transactional
-@JpaUnit("accounts-domain")
+
 public class AccountManagementServiceDefault implements AccountManagementService {
 
-    @Inject
     private HashingService hashingService;
 
-    @Inject
     private AccountFactory accountFactory;
 
-    @Inject
     private AccountRepository accountRepository;
+
+    @Inject
+    AccountManagementServiceDefault(HashingService hashingService, AccountFactory accountFactory,
+            AccountRepository accountRepository) {
+        super();
+        this.hashingService = hashingService;
+        this.accountFactory = accountFactory;
+        this.accountRepository = accountRepository;
+    }
 
     @Override
     public void createAccount(String id, String password) {
         Hash hash = hashingService.createHash(password);
         Account account = accountFactory.createAccount(id, hash.getHashAsString(), hash.getSaltAsString());
-        accountRepository.persist(account);
+        accountRepository.add(account);
     }
 
     @Override
     public Set<String> getRoles(String id) {
         Set<String> roles = new HashSet<String>();
-        Account account = accountRepository.load(id);
+        Account account = accountRepository.getAccount(id);
         for (Role role : account.getRoles()) {
             roles.add(role.getName());
         }
@@ -59,14 +65,14 @@ public class AccountManagementServiceDefault implements AccountManagementService
 
     @Override
     public void addRole(String id, String role) {
-        Account account = accountRepository.load(id);
+        Account account = accountRepository.getAccount(id);
         account.addRole(role);
-        accountRepository.save(account);
+        accountRepository.update(account);
     }
 
     @Override
     public void removeRole(String id, String role) {
-        Account account = accountRepository.load(id);
+        Account account = accountRepository.getAccount(id);
         Set<Role> roles = account.getRoles();
         for (Role currentRole : roles) {
             if (currentRole.getName().equals(role)) {
@@ -78,13 +84,13 @@ public class AccountManagementServiceDefault implements AccountManagementService
 
     @Override
     public void replaceRoles(String id, Set<String> roles) {
-        Account account = accountRepository.load(id);
+        Account account = accountRepository.getAccount(id);
         Set<Role> currentRoles = account.getRoles();
         currentRoles.clear();
         for (String role : roles) {
             account.addRole(role);
         }
-        accountRepository.save(account);
+        accountRepository.update(account);
     }
 
 }

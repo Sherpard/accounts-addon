@@ -10,7 +10,6 @@
  */
 package org.seedstack.accounts.internal.domain.account;
 
-
 import org.seedstack.business.domain.BaseFactory;
 
 /**
@@ -25,7 +24,7 @@ public class AccountFactoryDefault extends BaseFactory<Account> implements Accou
 
     @Override
     public Account createAccount(String accountId, String password, String salt) {
-        Account a = new Account(accountId);
+        Account a = this.create(accountId);
         a.setHashedPassword(password);
         a.setSalt(salt);
         return a;
