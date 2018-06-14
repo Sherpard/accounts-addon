@@ -17,3 +17,5 @@ release.properties
 
 #Vim
 *~
+
+rest/\.checkstyle

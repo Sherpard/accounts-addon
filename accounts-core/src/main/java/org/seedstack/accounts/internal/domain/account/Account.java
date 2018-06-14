@@ -10,36 +10,28 @@
  */
 package org.seedstack.accounts.internal.domain.account;
 
-import org.seedstack.business.domain.BaseAggregateRoot;
-
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.seedstack.business.domain.BaseAggregateRoot;
+import org.seedstack.business.domain.Identity;
 
 /**
- * An account is merely an id, a hashed password and the salt used to hash the password.
+ * An account is merely an id, a hashed password and the salt used to hash the
+ * password.
  */
-@Entity
-@Table(name = "SEED_ACCOUNTS")
 public class Account extends BaseAggregateRoot<String> implements Serializable {
 
     private static final long serialVersionUID = 4203266703741337332L;
 
-    @Id
+    @Identity
     private String accountId;
 
     private String hashedPassword;
 
     private String salt;
 
-    @ElementCollection
-    @CollectionTable(name = "SEED_ACCOUNT_ROLES")
     private Set<Role> roles;
 
     protected Account() {
@@ -50,7 +42,6 @@ public class Account extends BaseAggregateRoot<String> implements Serializable {
         this.roles = new HashSet<Role>();
     }
 
-    @Override
     public String getEntityId() {
         return accountId;
     }
@@ -76,7 +67,8 @@ public class Account extends BaseAggregateRoot<String> implements Serializable {
     /**
      * Sets the hashed password.
      *
-     * @param hashedPassword a String being the hashed password
+     * @param hashedPassword
+     *            a String being the hashed password
      */
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
@@ -85,7 +77,8 @@ public class Account extends BaseAggregateRoot<String> implements Serializable {
     /**
      * Sets the salt.
      *
-     * @param salt a String being the salt
+     * @param salt
+     *            a String being the salt
      */
     public void setSalt(String salt) {
         this.salt = salt;
@@ -103,7 +96,8 @@ public class Account extends BaseAggregateRoot<String> implements Serializable {
     /**
      * Adds a new role.
      *
-     * @param role name of the role
+     * @param role
+     *            name of the role
      */
     public void addRole(String role) {
         roles.add(new Role(role));

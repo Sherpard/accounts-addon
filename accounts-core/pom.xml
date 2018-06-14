@@ -1,0 +1,53 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.seedstack.addons.accounts</groupId>
+        <artifactId>accounts-addon</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>accounts-core</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.seedstack.seed</groupId>
+            <artifactId>seed-core</artifactId>
+            <version>${seed.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seedstack.seed</groupId>
+            <artifactId>seed-security-specs</artifactId>
+            <version>${seed.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seedstack.business</groupId>
+            <artifactId>business-core</artifactId>
+            <version>${business.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.seedstack.seed</groupId>
+            <artifactId>seed-testing-junit4</artifactId>
+            <version>${seed.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seedstack.seed</groupId>
+            <artifactId>seed-security-core</artifactId>
+            <version>${seed.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
